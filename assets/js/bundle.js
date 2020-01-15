@@ -1,10 +1,18 @@
+"use strict";
 (() => {
-    const selector = selector => /* trecho omitido */
-    const create = element => /* trecho omitido */
+    const TOKEN = "token";
+
+    const selector = selector => {
+        return document.querySelector(selector);
+    };
+    const create = element => {
+        return document.createElement(element);
+    };
 
     const app = selector('#app');
 
     const Login = create('div');
+
     Login.classList.add('login');
 
     const Logo = create('img');
@@ -15,42 +23,43 @@
 
     Form.onsubmit = async e => {
         e.preventDefault();
-        const [email, password] = /* trecho omitido */
 
-        const {url} = await fakeAuthenticate(email.value, password.value);
+        const [email, password] = e.target.children;
 
-        location.href='#users';
-        
+        const { url } = await fakeAuthenticate(email.value, password.value);
+
+        location.href = '#users';
+
         const users = await getDevelopersList(url);
         renderPageUsers(users);
     };
 
     Form.oninput = e => {
         const [email, password, button] = e.target.parentElement.children;
-        (!email.validity.valid || !email.value || password.value.length <= 5) 
-            ? button.setAttribute('disabled','disabled')
+        (!email.validity.valid || !email.value || password.value.length <= 5)
+            ? button.setAttribute('disabled', 'disabled')
             : button.removeAttribute('disabled');
     };
 
-    Form.innerHTML = /**
-    * bloco de código omitido
-    * monte o seu formulário
-    */
+    Form.innerHTML = `
+        <input class="" type="text" name="email" placeholder="Entre com seu email" autofocus/>
+        <input class="" type="password" name="password" placeholder="Sua senha supersecreta"/>
+        <button>Entrar</button>
+    `;
 
     app.appendChild(Logo);
     Login.appendChild(Form);
 
     async function fakeAuthenticate(email, password) {
 
-        /**
-         * bloco de código omitido
-         * aqui esperamos que você faça a requisição ao URL informado
-         */
+        return await fetch('http://www.mocky.io/v2/5dba690e3000008c00028eb6').then(response => {
+            return response.json().then(data => {
+                const fakeJwtToken = `${btoa(email + password)}.${btoa(data.url)}.${(new Date()).getTime() + 300000}`;
+                localStorage.setItem(TOKEN, fakeJwtToken)
+                return data;
+            });
+        });
 
-        const fakeJwtToken = `${btoa(email+password)}.${btoa(data.url)}.${(new Date()).getTime()+300000}`;
-        /* trecho omitido */
-
-        return data;
     }
 
     async function getDevelopersList(url) {
@@ -59,33 +68,46 @@
          * aqui esperamos que você faça a segunda requisição 
          * para carregar a lista de desenvolvedores
          */
+
+        return await fetch(url).then(response => {
+            return response.json().then(data => {
+                return data;
+            });
+        });
     }
 
     function renderPageUsers(users) {
         app.classList.add('logged');
-        Login.style.display = /* trecho omitido */
+        Login.style.display = false;
 
         const Ul = create('ul');
         Ul.classList.add('container')
 
-        /**
-         * bloco de código omitido
-         * exiba a lista de desenvolvedores
-         */
+        users.map(item => {
+            console.log(item);
+            const LI = create('li');
+            LI.innerHTML = `
+            <img src="${item.avatar_url}"/>
+            <span>${item.login}</span>
+            `
+            Ul.appendChild(LI);
+        });
+
 
         app.appendChild(Ul)
     }
 
     // init
-    (async function(){
-        const rawToken = /* trecho omitido */
+    (async function () {
+        const rawToken = localStorage.getItem(TOKEN) || undefined;
         const token = rawToken ? rawToken.split('.') : null
+        // console.log(token[2], (new Date()).getTime());
         if (!token || token[2] < (new Date()).getTime()) {
-            localStorage.removeItem('token');
-            location.href='#login';
+            localStorage.removeItem(TOKEN);
+            location.href = '#login';
             app.appendChild(Login);
         } else {
-            location.href='#users';
+            location.href = '#users';
             const users = await getDevelopersList(atob(token[1]));
             renderPageUsers(users);
         }

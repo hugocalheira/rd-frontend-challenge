@@ -1,35 +1,174 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap');
+
+::-webkit-input-placeholder,
+:-ms-input-placeholder,
+::placeholder {
+    color: #787878;
+}
+
 * {
     margin: 0;
     padding: 0;
     outline: 0;
     box-sizing: border-box;
 }
+
 *:focus {
     outline: 0;
 }
-html, body, #app {
+
+html,
+body,
+#app {
     height: 100%;
 }
-body, input, button {
+
+body,
+input,
+button {
     font: 14px 'Roboto', sans-serif;
 }
+
 a {
     text-decoration: none;
 }
+
 ul {
     list-style: none;
 }
+
 button {
     cursor: pointer;
 }
 
 body {
     -webkit-font-smoothing: antialiased;
-    background: linear-gradient(-45deg, #aaa 25%, #eee 100%);
+    background: rgb(237, 237, 237);
+    background: linear-gradient(135deg, rgba(237, 237, 237, 1) 0%, rgba(170, 170, 170, 1) 100%);
     background-attachment: fixed;
 }
 
 /**
 * YOUR CODE HERE
 */
+#app {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo {
+    width: auto;
+    height: 40px;
+}
+
+#app .login {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    width: 90%;
+}
+
+#app form {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 1.5rem;
+    background-color: #dddddd;
+    border-top-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+    margin-top: 1.5rem;
+
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
+}
+
+#app.logged form {
+    display: none;
+}
+
+#app form input,
+#app form button {
+    border: solid 1px transparent;
+    border-radius: 7px;
+    font-size: 14px;
+    margin-bottom: 7px;
+    padding: 7px;
+    transition: all .2s ease-in-out;
+}
+
+#app form input {
+    color: #000000;
+    background-color: #d3d3d3;
+
+}
+
+#app form button {
+    color: #ffffff;
+    background-color: #008429;
+}
+
+#app form button:disabled {
+    color: #ffffff;
+    background-color: #d1d1d1;
+    cursor: not-allowed;
+}
+
+#app.logged .container {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    max-width: 700px;
+    width: 90%;
+}
+
+
+#app.logged .container li {
+    display: flex;
+    flex-grow: 1;
+    padding: .2rem;
+    border: solid 1px #ccc;
+    background-color: #ffffff;
+    border-radius: 5px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.21);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.21);
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.21);
+
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+
+    align-items: center;
+}
+
+#app.logged .container li span {
+    margin-left: 5px;
+}
+
+#app.logged .container li:hover {
+    cursor: pointer;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.41);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.41);
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.41);
+
+}
+
+#app.logged .container li img {
+    height: 30px;
+    border-radius: 40px;
+    transition: all 0.2s ease-in-out;
+    -webkit-box-shadow: 0;
+    -moz-box-shadow: 0;
+    box-shadow: 0;
+}
+
+#app.logged .container li:hover img {
+    transform: scale(2);
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.41);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.41);
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.41);
+}
